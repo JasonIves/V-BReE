@@ -138,7 +138,7 @@ class Ensemble:
             single_model_flag = False
             last_variance = float('inf')
             ##ITERATE WHILE VARIANCE ABOVE THRESHOLD, HARD CAPPED AT 99 AS SAFETY VALVE 
-            while last_variance > local_variance_threshold and iter_index >= len(self.models) and iter_index < 99 and single_model_flag == False:
+            while last_variance > local_variance_threshold and iter_index < 99 and single_model_flag == False:
                 iter_result = dict.fromkeys(self.result_cols)
                 iter_result["id"] = getattr(row, id_col)
                 iter_result["iteration"] = iter_index
