@@ -167,7 +167,7 @@ class Ensemble:
                     row_results.loc[len(row_results) - 1, "scoring_model"] = self.models[model_index]
                     row_results.loc[len(row_results) - 1, "score"] = response["score"]
                     ##UPDATE MOVING AVERAGE AND VARIANCE
-                    if iter_index >= (len(self.models) - 1):
+                    if iter_index >= (len(self.models) - 1):  ##ENSURE MOVING AVERAGE AND VARIANCE ONLY CALCULATED ONCE WE HAVE SCORES FROM ALL MODELS IN THE ENSEMBLE
                         row_results.loc[len(row_results) - 1, "score_moving_avg"] = row_results.loc[(len(row_results) - len(self.models)):, "score"].mean()
                         last_variance = row_results.loc[(len(row_results) - len(self.models)):, "score"].var()
                         row_results.loc[len(row_results) - 1, "score_moving_variance"] = last_variance
