@@ -15,8 +15,8 @@ class Ensemble:
         self.client = client
         self.verbose = verbose
         self.models = []
-        self.variance_threshold = 5.0
-        self.variance_scaling_factor = 1.4
+        self.variance_threshold = 9.5
+        self.variance_scaling_factor = 1.1
         self.variance_confidence_coefficient = 1.0
         self.mean_confidence_coefficient = 1.0
         self.n_confidence_coefficient = 1.0
