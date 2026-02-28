@@ -25,9 +25,7 @@ class Ensemble:
         self.instructions = (
             "Task:\n"
             "1. Rate the answer from 0 to 100 by aggregating scores for clarity (0-30 points), completeness (0-30 points), and accuracy (0-40 points).  Empty responses should receive the minimum score.\n"
-            # "1. Rate the clarity (0-30 points), completeness (0-30 points), and accuracy (0-40 points) of the existing answer for a sum score between 0 and 100 where 0 is the worst possible score and 100 is the best possible score.  An empty answer should score poorly.\n"
-            "2. Refine the answer for maximum clarity, completeness, and accuracy. Remove filler and omit feedback or references to the original version.  If no improvements are possible, provide the text verbatim."
-            # "2. Make any necessary updates to the existing answer to improve the clarity, completeness, and accuracy.  Avoid filler text that does not add value. Do not include any feedback or refrence to the original. If no changes are needed, repeat exactly."
+            "2. Refine the answer for maximum clarity, completeness, and accuracy. Remove filler and omit feedback or references to the original version.  Restrict your response to 600 tokens.  If no improvements are possible, provide the text verbatim."
         )
         self.mcq_instructions = "3. Based on your updated response, identify the single letter from the possible choices provided corresponding to the best answer."
 
@@ -92,6 +90,9 @@ class Ensemble:
         return variance_threshold
 
     def _best_response(self, df: pd.DataFrame):
+        ##FILTER DF TO INCLUDE NON-ERROR RESPONSES ONLY - ADDED 20260228
+        df = df[df["updated_answer"] != "Error"]
+        
         sorted_results = df.sort_values(
             by=['score_moving_variance', 'score_moving_avg', 'score'], 
             ascending=[True, False, False]
