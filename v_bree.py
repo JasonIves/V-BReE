@@ -190,8 +190,9 @@ class Ensemble:
                 if len(self.models) > 1:
                     model_index = (model_index + 1) % len(self.models)
                 else:
-                    single_model_flag = True
-                    warnings.warn("Ensemble operating in single model mode: {self.models[0]}, response improvement disabled.")
+                    if single_model_flag == False:
+                        single_model_flag = True
+                        warnings.warn(f"Ensemble operating in single model mode: {self.models[0]}, response collaboration disabled.")
 
                 iter_index += 1
 
