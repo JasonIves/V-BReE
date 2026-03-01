@@ -92,7 +92,7 @@ class Ensemble:
     def _best_response(self, df: pd.DataFrame):
         ##FILTER DF TO INCLUDE NON-ERROR RESPONSES ONLY - ADDED 20260228
         df = df[df["updated_answer"] != "Error"]
-        
+
         sorted_results = df.sort_values(
             by=['score_moving_variance', 'score_moving_avg', 'score'], 
             ascending=[True, False, False]
@@ -168,7 +168,7 @@ class Ensemble:
                     row_results.loc[len(row_results) - 1, "scoring_model"] = self.models[model_index]
                     row_results.loc[len(row_results) - 1, "score"] = response["score"]
                     ##UPDATE MOVING AVERAGE AND VARIANCE
-                    if iter_index >= (len(self.models) - 1):  ##ENSURE MOVING AVERAGE AND VARIANCE ONLY CALCULATED ONCE WE HAVE SCORES FROM ALL MODELS IN THE ENSEMBLE
+                    if iter_index >= len(self.models):  ##ENSURE MOVING AVERAGE AND VARIANCE ONLY CALCULATED ONCE WE HAVE SCORES FROM ALL MODELS IN THE ENSEMBLE
                         row_results.loc[len(row_results) - 1, "score_moving_avg"] = row_results.loc[(len(row_results) - len(self.models)):, "score"].mean()
                         last_variance = row_results.loc[(len(row_results) - len(self.models)):, "score"].var()
                         row_results.loc[len(row_results) - 1, "score_moving_variance"] = last_variance
