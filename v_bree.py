@@ -116,6 +116,8 @@ class Ensemble:
         if not data[choices_col].apply(lambda x: isinstance(x, list)).all():
             raise ValueError(f"All entries in the choices column '{choices_col}' must be of type list. Example: ['Rock, 'Paper', 'Scissors']")
 
+        single_model_flag = False
+
         ##PROCESS DF ROWS
         for row in data.itertuples():
             if self.verbose:
@@ -136,7 +138,6 @@ class Ensemble:
             row_results = pd.DataFrame(columns = self.result_cols)
             local_variance_threshold = self.variance_threshold
             iter_index = 0
-            single_model_flag = False
             last_variance = float('inf')
             ##ITERATE WHILE VARIANCE ABOVE THRESHOLD, HARD CAPPED AT 99 AS SAFETY VALVE 
             while last_variance > local_variance_threshold and iter_index < 99 and single_model_flag == False:
@@ -250,7 +251,10 @@ class Ensemble:
                 # max_tokens = 500,
                 response_format = self.response_format
             )
-            return [self._extract_response(response.choices[0].message.content), {"response_tokens": response.usage.completion_tokens, "prompt_tokens": response.usage.prompt_tokens}]
+            try:
+                return [self._extract_response(response.choices[0].message.content), {"response_tokens": response.usage.completion_tokens, "prompt_tokens": response.usage.prompt_tokens}]
+            except Exception as e:
+                return [{"score": 0, "response": "Error", "letter": ""}, {"response_tokens": 0, "prompt_tokens": 0}]
         except Exception as e:
             if self.verbose:
                 print(f"Error during API call: {e}")
