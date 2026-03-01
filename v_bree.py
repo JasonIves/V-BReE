@@ -167,12 +167,12 @@ class Ensemble:
                 if iter_index > 0:
                     row_results.loc[iter_index - 1, "scoring_model"] = self.models[model_index]
                     row_results.loc[iter_index - 1, "score"] = response["score"]
-                    ##UPDATE MOVING AVERAGE AND VARIANCE
-                    if iter_index > len(self.models):  ##ENSURE MOVING AVERAGE AND VARIANCE ONLY CALCULATED ONCE WE HAVE SCORES FROM ALL MODELS IN THE ENSEMBLE
-                        row_results.loc[iter_index - 1, "score_moving_avg"] = row_results.loc[(len(row_results) - len(self.models)):, "score"].mean()
+                    ##UPDATE MOVING AVERAGE AND VARIANCE ON LAST ENTRY
+                    if iter_index >= len(self.models):  ##ENSURE MOVING AVERAGE AND VARIANCE ONLY CALCULATED ONCE WE HAVE SCORES FROM ALL MODELS IN THE ENSEMBLE
+                        row_results.loc[len(row_results) - 1, "score_moving_avg"] = row_results.loc[(len(row_results) - len(self.models)):, "score"].mean()
                         last_variance = row_results.loc[(len(row_results) - len(self.models)):, "score"].var()
-                        row_results.loc[iter_index - 1, "score_moving_variance"] = last_variance
-                        row_results.loc[iter_index - 1, "confidence_score"] = self._calculate_confidence_score(row_results.loc[iter_index - 1, "score_moving_avg"], row_results.loc[iter_index - 1, "score_moving_variance"], len(row_results))
+                        row_results.loc[len(row_results) - 1, "score_moving_variance"] = last_variance
+                        row_results.loc[len(row_results) - 1, "confidence_score"] = self._calculate_confidence_score(row_results.loc[len(row_results) - 1, "score_moving_avg"], row_results.loc[len(row_results) - 1, "score_moving_variance"], len(row_results))
 
                 iter_result["updated_answer"] = response["response"]
                 iter_result["selected_choice"] = response["letter"]
