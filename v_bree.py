@@ -21,6 +21,7 @@ class Ensemble:
         self.mean_confidence_coefficient = 1.0
         self.n_confidence_coefficient = 1.0
         self.response_format = None
+        self.single_model_flag = False
         self.choices = []
         self.instructions = (
             "Task:\n"
@@ -116,7 +117,10 @@ class Ensemble:
         if not data[choices_col].apply(lambda x: isinstance(x, list)).all():
             raise ValueError(f"All entries in the choices column '{choices_col}' must be of type list. Example: ['Rock, 'Paper', 'Scissors']")
 
-        single_model_flag = False
+        ##SET SINGLE MODEL FLAG IF ONLY ONE MODEL IN ENSEMBLE TO AVOID UNNECESSARY ITERATIONS
+        if len(self.models) == 1:
+            self.single_model_flag = True
+            warnings.warn(f"Ensemble operating in single model mode: {self.models[0]}, response collaboration disabled.")                        
 
         ##PROCESS DF ROWS
         for row in data.itertuples():
@@ -140,7 +144,7 @@ class Ensemble:
             iter_index = 0
             last_variance = float('inf')
             ##ITERATE WHILE VARIANCE ABOVE THRESHOLD, HARD CAPPED AT 99 AS SAFETY VALVE 
-            while last_variance > local_variance_threshold and iter_index < 99 and single_model_flag == False:
+            while last_variance > local_variance_threshold and iter_index < 99 and (self.single_model_flag == False or (self.single_model_flag == True and iter_index == 0)):
                 iter_result = dict.fromkeys(self.result_cols)
                 iter_result["id"] = getattr(row, id_col)
                 iter_result["iteration"] = iter_index
@@ -189,11 +193,8 @@ class Ensemble:
 
                 ##ITERATE MODEL SELECTION
                 if len(self.models) > 1:
+                    self.single_model_flag = False
                     model_index = (model_index + 1) % len(self.models)
-                else:
-                    if single_model_flag == False:
-                        single_model_flag = True
-                        warnings.warn(f"Ensemble operating in single model mode: {self.models[0]}, response collaboration disabled.")
 
                 iter_index += 1
 
@@ -254,6 +255,7 @@ class Ensemble:
             try:
                 return [self._extract_response(response.choices[0].message.content), {"response_tokens": response.usage.completion_tokens, "prompt_tokens": response.usage.prompt_tokens}]
             except Exception as e:
+                print(f"Error extracting response: {e}")
                 return [{"score": 0, "response": "Error", "letter": ""}, {"response_tokens": 0, "prompt_tokens": 0}]
         except Exception as e:
             if self.verbose:
