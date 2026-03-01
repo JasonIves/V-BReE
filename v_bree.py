@@ -91,6 +91,9 @@ class Ensemble:
         return variance_threshold
 
     def _best_response(self, df: pd.DataFrame):
+        if self.single_model_flag:
+            return 0
+
         ##FILTER DF TO INCLUDE NON-ERROR RESPONSES ONLY - ADDED 20260228
         df = df[df["updated_answer"] != "Error"]
 
