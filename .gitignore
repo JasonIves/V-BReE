@@ -1,6 +1,5 @@
 2503.17587v1.pdf
 6400_2page_proposal_notes.docx
-7710d4cc-9c83-4ce8-ad75-258fdcf88376 - ICE
 analysisDf_mmluSample21_20260210.csv
 DATA6400_Outline.pdf
 datasets.ipynb
@@ -48,3 +47,7 @@ proposal_presentation/ji_base_slides.pptx
 proposal_presentation/project_presentation_outline.docx
 proposal_presentation/project_presentation_outline.pdf
 proposal_presentation/proposal presentation guidelines.docx
+__pycache__/
+project_research/
+project_work_products/
+proposal_presentation/
