@@ -73,10 +73,25 @@ class Ensemble:
     def _extract_response(self, response: str) -> dict:
         """Extracts score and updated response from the JSON response."""
         try:
-            extracted_response = json.loads(response)
-            ##HANDLE CASES WHERE RESPONSE DOES NOT ADHERE TO FORMAT, ASSUMING LOW SCORE AND RETURNING RAW RESPONSE FOR REVIEW
-            if not isinstance(extracted_response, dict):
-                extracted_response = {"score": 0, "response": extracted_response, "letter": ""}
+            raw_response = json.loads(response)
+            ##DEFAULT RESPONSE VALUES IN CASE OF EXTRACTION ISSUES
+            extracted_response = {"score": 0, "response": "Error", "letter": ""}
+
+            ##HANDLE CASES WHERE RESPONSE DOES NOT ADHERE TO FORMAT
+            if not isinstance(raw_response, dict):
+                extracted_response["response"] = raw_response if isinstance(raw_response, str) else str(raw_response)
+                return extracted_response
+
+            ##PIPE IN VALID VALUES WHERE POSSIBLE
+            if "score" in raw_response:
+                extracted_response["score"] = raw_response["score"]
+
+            if "response" in raw_response:
+                extracted_response["response"] = raw_response["response"]
+
+            if "letter" in raw_response:
+                extracted_response["letter"] = raw_response["letter"]
+
             return extracted_response
         except json.JSONDecodeError as e:
             extracted_response = {"score": 0, "response": "Error", "letter": ""}
