@@ -15,6 +15,7 @@ To install the V-BReE module, clone the git repository into the colab file syste
 `vbree_path = Path("v_bree.py")`
 
 `if not vbree_path.is_file():`
+
   `!wget https://raw.githubusercontent.com/JasonIves/V-BReE/main/v_bree.py`
 
 ---
@@ -94,7 +95,9 @@ Pre-loading is not necessary for Hugging Face Inference Client.
 There is no set limit to the number of models that can be added.  Prompting a single model configuration will return non-ensemble, single-prompt results.
 
 `e.add_model("openai/gpt-oss-20b:groq")`
+
 `e.add_model("Qwen/Qwen2.5-7B-Instruct:together")`
+
 `e.add_model("meta-llama/Llama-3.1-8B-Instruct:cerebras")`
 
 ### Run the V-BReE ensemble
