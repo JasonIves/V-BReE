@@ -75,11 +75,9 @@ Parameters:
 
 ### Check for available models
 
-Use the HfApi module to review what models are available through the Hugging Face Inference Hub.
+Identify models for ensembling.  For testing and development HfApi with a "text-generation" filter was used to identify the constituent models.
 
-For the V-BReE project "text-generation" is the appropriate filter.  An author filter is recommended as well, otherwise the query will return many hundreds of responses.
-
-Commonly chosen authors are:
+Commonly chosen HfApi authors are:
 - openai
 - google
 - meta-llama
