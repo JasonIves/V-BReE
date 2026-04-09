@@ -3,7 +3,7 @@ Tested using [MMLU-PRO](https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro)
 
 ---
 
-# Documentation and workspace template for V-BReE framework.
+# Documentation and workspace setup for the V-BReE framework.
 
 ## 1. Adding the V-BReE framework to a workspace
 
