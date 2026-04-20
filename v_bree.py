@@ -5,6 +5,7 @@ import json
 
 import pandas as pd
 import numpy as np
+import json_repair
 
 class Ensemble:
     def __init__(self, client, response_type: str, verbose: bool = False):
@@ -73,7 +74,7 @@ class Ensemble:
     def _extract_response(self, response: str) -> dict:
         """Extracts score and updated response from the JSON response."""
         try:
-            raw_response = json.loads(response)
+            raw_response = json_repair.loads(response)
             ##DEFAULT RESPONSE VALUES IN CASE OF EXTRACTION ISSUES
             extracted_response = {"score": 0, "response": "Error", "letter": ""}
 
@@ -235,7 +236,7 @@ class Ensemble:
                                              "type": "object",
                                              "properties": {
                                                  "score": {"type": "number"},
-                                                 "response": {"type": "string"},
+                                                 "response": {"type": "string"}, 
                                                  "letter": {"type": "string"}
                                                  },
                                              "required": ["score", "response", "letter"],
