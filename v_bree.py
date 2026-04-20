@@ -26,8 +26,8 @@ class Ensemble:
         self.choices = []
         self.instructions = (
             "Task:\n"
-            "1. Rate the answer from 0 to 100 by aggregating scores for clarity (0-30 points), completeness (0-30 points), and accuracy (0-40 points).  Empty responses should receive the minimum score.\n"
-            "2. Refine the answer for maximum clarity, completeness, and accuracy. Remove filler and omit feedback or references to the original version.  Restrict your response to 600 tokens.  If no improvements are possible, provide the text verbatim."
+            "1. Rate the answer from 0 to 100 by aggregating scores for clarity (0-30 points), completeness (0-30 points), and accuracy (0-40 points). Empty responses should receive the minimum score.\n"
+            "2. Refine the answer for maximum clarity, completeness, and accuracy. Remove filler and omit feedback or references to the original version. Restrict your response to 600 tokens. Respond using the provided JSON template. If no improvements are possible, provide the text verbatim."
         )
         self.mcq_instructions = "3. Based on your updated response, identify the single letter from the possible choices provided corresponding to the best answer."
 
